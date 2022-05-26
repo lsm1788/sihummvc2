@@ -50,8 +50,19 @@ public class ListController extends HttpServlet {
 		}
 		
 		int startPage = (pageNum - 1) * pageRow;
+
 		
-		BoardInfo boardInfo = service.boardInfo(startPage, pageRow);
+		String field = request.getParameter("field");
+		if(field == null) {
+			field = "title";
+		}
+		
+		String keyWord = request.getParameter("keyWord");
+		if(keyWord == null) {
+			keyWord = "";
+		}
+		
+		BoardInfo boardInfo = service.boardInfo(startPage, pageRow, field, keyWord);
 		
 		//글번호 넘버링
 		int totalNum = boardInfo.getTotalRow()-((pageNum - 1) * pageRow);
@@ -67,6 +78,10 @@ public class ListController extends HttpServlet {
 		request.setAttribute("totalNum", totalNum);
 		request.setAttribute("boardInfo", boardInfo);
 		request.setAttribute("pageNum", pageNum);
+
+		request.setAttribute("field", field);
+		request.setAttribute("keyWord", keyWord);
+		
 //		Collection<BoardVO> list = service.read();
 //		int totalRow = service.totalRow();
 //		

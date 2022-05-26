@@ -17,10 +17,14 @@ int pageRow = (Integer) request.getAttribute("pageRow");
 int pagingNum = (Integer) request.getAttribute("pagingNum");
 int startNum = (Integer) request.getAttribute("startNum");
 
+String field = (String) request.getAttribute("field");
+String keyWord = (String) request.getAttribute("keyWord");
+
 int lastPage = totalRow/pageRow+((totalRow%pageRow == 0)?0:1);
 if(pageNum > lastPage || pageNum < 1){
-	response.sendRedirect("http://www.naver.com");
+	//response.sendRedirect("http://www.naver.com");
 }
+
 //Collection<BoardVO> list = (Collection)request.getAttribute("list");
 //int totalRow = (Integer)request.getAttribute("totalRow");
 %>
@@ -44,8 +48,37 @@ if(pageNum > lastPage || pageNum < 1){
 <body>
 	<div class="container">
 		<div>
-			전체글수 :
-			<%=totalRow%></div>
+			<div class="pull-left">전체글수 : <%=totalRow%></div>
+			<div class="pull-right" style="width:310px;">
+				<%-- <form>
+					<select name="field" class="form-control" style="display:inline-block;width:30%">
+						<option value="">전체</option>
+						<option value="title" <%="title".equals(field)?"selected='selected'":"" %>>제목</option>
+						<option value="content" <%="content".equals(field)?"selected='selected'":"" %>>내용</option>
+						<option value="titleContent" <%="titleContent".equals(field)?"selected='selected'":"" %>>제목+내용</option>
+					</select>
+					<input type="text" name="keyWord" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%">
+				</form> --%>
+				<form name="field">
+				<div>
+					제목
+					<input type="text" name="keyWord" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%"><br>
+				</div>
+				<div>
+					내용
+					<input type="text" name="keyWord2" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%"><br>
+				</div>
+				<div>
+					작성자
+					<input type="text" name="keyWord3" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%"><br>
+				</div>
+					<button class="btn btn-default">검색</button>
+				</form>
+			<div style="position: absolute; left: 200px; ">
+				<a href="list"><h4>메인으로</h4></a>
+			</div>
+			</div>
+		</div>
 		<table class="table">
 			<thead>
 				<tr>
@@ -97,12 +130,12 @@ if(pageNum > lastPage || pageNum < 1){
 					if(i > lastPage) break;
 					if(pageNum == i){
 				%>
-				<li class="active"><a href="?pageNum=<%=i%>"><%=i%></a></li>
-				<%
-					} else{
+				<li class="active"><a><%=i%></a></li>
+				<%		
+					} else {
 				%>
-				<li><a href="?pageNum=<%=i%>"><%=i%></a></li>
-				<%
+				<li><a href="?pageNum=<%=i%>&field=<%=field %>&keyWord=<%=keyWord %>"><%=i%></a></li>
+				<%		
 					}
 				}
 				%>
