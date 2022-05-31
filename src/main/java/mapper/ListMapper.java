@@ -33,6 +33,8 @@ public class ListMapper {
 						vo.setTitle(rs.getString("title"));
 						vo.setWriter(rs.getString("writer"));
 						vo.setWriterDate(rs.getTimestamp("writerDate"));
+						vo.setRealFileName(rs.getString("realFileName"));
+						vo.setRealSaveFileName(rs.getString("realSaveFileName"));
 						list.add(vo);
 					}
 				} catch (Exception e){
@@ -86,25 +88,25 @@ public class ListMapper {
 		return totalRow;
 	}
 	
-	public int totalRow(String field, String keyWord) {
+	public int totalRow(String keyWord, String keyWord2, String keyWord3) {
 		//DB불러오기
 				String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
 				String user = "root";
 				String password = "smart";
 				StringBuffer qry = new StringBuffer()
 						.append(" SELECT count(*) cnt FROM board ")
-						.append(" WHERE 1=1 ");
-				if("title".equals(field)) {
-					qry.append(" AND title LIKE concat('%',?,'%') ");
-				}
+						.append(" WHERE 1=1 ")
+//				if("title".equals(keyWord)) {
+						.append(" AND title LIKE concat('%',?,'%') ")
+//				}
 
-				if("content".equals(field)) {
-					qry.append(" AND content LIKE concat('%',?,'%') ");
-				}
-
-				if("titleContent".equals(field)) {
-					qry.append(" AND (title LIKE concat('%',?,'%') OR content LIKE concat('%',?,'%')) ");
-				}
+//				if("content".equals(keyWord)) {
+						.append(" AND content LIKE concat('%',?,'%') ")
+//				}
+//
+//				if("titleContent".equals(keyWord)) {
+						.append(" AND writer LIKE concat('%',?,'%') ");
+//				}
 				
 				String sql = qry.toString();
 				Connection conn = null;
@@ -120,16 +122,15 @@ public class ListMapper {
 					conn = DriverManager.getConnection(url, user, password);
 					stmt = conn.prepareStatement(sql);
 					
-					if("title".equals(field)) {
+//					if("title".equals(keyWord)) {
 						stmt.setString(idx++, keyWord);
-					}
-					if("content".equals(field)) {
-						stmt.setString(idx++, keyWord);
-					}
-					if("titleContent".equals(field)) {
-						stmt.setString(idx++, keyWord);
-						stmt.setString(idx++, keyWord);				
-					}
+//					}
+//					if("content".equals(keyWord)) {
+						stmt.setString(idx++, keyWord2);
+//					}
+//					if("titleContent".equals(keyWord)) {
+						stmt.setString(idx++, keyWord3);
+//					}
 
 					rs = stmt.executeQuery();
 					if(rs.next()){
@@ -149,25 +150,25 @@ public class ListMapper {
 				return totalRow;
 	}
 
-	public Collection<BoardVO> read(int startPage, int pageRow, String field, String keyWord) {
+	public Collection<BoardVO> read(int startPage, int pageRow, String keyWord, String keyWord2, String keyWord3) {
 		//DB불러오기
 		String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
 		String user = "root";
 		String password = "smart";
 		StringBuffer qry = new StringBuffer()
 				.append(" SELECT * FROM board ")
-				.append(" WHERE 1=1 ");
-		if("title".equals(field)) {
-			qry.append(" AND title LIKE concat('%',?,'%') ");
-		}
+				.append(" WHERE 1=1 ")
+//		if("title".equals(keyWord)) {
+				.append(" AND title LIKE concat('%',?,'%') ")
+//		}
 
-		if("content".equals(field)) {
-			qry.append(" AND content LIKE concat('%',?,'%') ");
-		}
-
-		if("titleContent".equals(field)) {
-			qry.append(" AND (title LIKE concat('%',?,'%') OR content LIKE concat('%',?,'%')) ");
-		}
+//		if("content".equals(keyWord)) {
+				.append(" AND content LIKE concat('%',?,'%') ")
+//		}
+//
+//		if("titleContent".equals(keyWord)) {
+				.append(" AND writer LIKE concat('%',?,'%') ");
+//		}
 		
 		qry.append(" ORDER BY num DESC LIMIT ?, ? ");
 		
@@ -185,16 +186,15 @@ public class ListMapper {
 			
 			conn = DriverManager.getConnection(url, user, password);
 			stmt = conn.prepareStatement(sql);
-			if("title".equals(field)) {
+//			if("title".equals(keyWord)) {
 				stmt.setString(idx++, keyWord);
-			}
-			if("content".equals(field)) {
-				stmt.setString(idx++, keyWord);
-			}
-			if("titleContent".equals(field)) {
-				stmt.setString(idx++, keyWord);
-				stmt.setString(idx++, keyWord);				
-			}
+//			}
+//			if("content".equals(keyWord)) {
+				stmt.setString(idx++, keyWord2);
+//			}
+//			if("titleContent".equals(keyWord)) {
+				stmt.setString(idx++, keyWord3);
+//			}
 			stmt.setInt(idx++, startPage);
 			stmt.setInt(idx++, pageRow);
 			
@@ -205,6 +205,8 @@ public class ListMapper {
 				vo.setTitle(rs.getString("title"));
 				vo.setWriter(rs.getString("writer"));
 				vo.setWriterDate(rs.getTimestamp("writerDate"));
+				vo.setRealFileName(rs.getString("realFileName"));
+				vo.setRealSaveFileName(rs.getString("realSaveFileName"));
 				list.add(vo);
 			}
 		} catch (Exception e){

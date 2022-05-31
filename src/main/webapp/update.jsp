@@ -35,6 +35,11 @@
 				<td><textarea name="content" class="form-control"><%=vo.getContent() %></textarea></td>
 			</tr>
 			<tr>
+				<th>첨부파일</th>
+				<td><input type="hidden" value="<%=vo.getRealFileName()%>" name="oldFile" class="form-control"></td>
+				<td><input type="file" value="" id="upfile" name="upfile" class="form-control"></td>
+			</tr>
+			<tr>
 				<th>작성자</th>
 				<td><input name="writer" class="form-control" value="<%=vo.getWriter() %>"></td>
 			</tr>

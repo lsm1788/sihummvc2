@@ -17,8 +17,9 @@ int pageRow = (Integer) request.getAttribute("pageRow");
 int pagingNum = (Integer) request.getAttribute("pagingNum");
 int startNum = (Integer) request.getAttribute("startNum");
 
-String field = (String) request.getAttribute("field");
 String keyWord = (String) request.getAttribute("keyWord");
+String keyWord2 = (String) request.getAttribute("keyWord2");
+String keyWord3 = (String) request.getAttribute("keyWord3");
 
 int lastPage = totalRow/pageRow+((totalRow%pageRow == 0)?0:1);
 if(pageNum > lastPage || pageNum < 1){
@@ -48,7 +49,10 @@ if(pageNum > lastPage || pageNum < 1){
 <body>
 	<div class="container">
 		<div>
-			<div class="pull-left">전체글수 : <%=totalRow%></div>
+			<div class="pull-left" style="font-size: 20px;">전체글수 : <%=totalRow%></div><br>
+			<div>
+				<a href="list" style="font-weight: bold; font-size: 30px; color: red;">메인으로</a>
+			</div>
 			<div class="pull-right" style="width:310px;">
 				<%-- <form>
 					<select name="field" class="form-control" style="display:inline-block;width:30%">
@@ -59,24 +63,21 @@ if(pageNum > lastPage || pageNum < 1){
 					</select>
 					<input type="text" name="keyWord" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%">
 				</form> --%>
-				<form name="field">
-				<div>
-					제목
-					<input type="text" name="keyWord" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%"><br>
-				</div>
-				<div>
-					내용
-					<input type="text" name="keyWord2" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%"><br>
-				</div>
-				<div>
-					작성자
-					<input type="text" name="keyWord3" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%"><br>
-				</div>
-					<button class="btn btn-default">검색</button>
+				<form>
+					<div>
+						제목
+						<input type="text" name="keyWord" value="<%=keyWord %>" class="form-control" style="display:inline-block; width:50%"><br>
+					</div>
+					<div>
+						내용
+						<input type="text" name="keyWord2" value="<%=keyWord2 %>" class="form-control" style="display:inline-block; width:50%"><br>
+					</div>
+					<div>
+						작성자
+						<input type="text" name="keyWord3" value="<%=keyWord3 %>" class="form-control" style="display:inline-block; width:50%"><br>
+					</div>
+						<button class="btn btn-default">검색</button>
 				</form>
-			<div style="position: absolute; left: 200px; ">
-				<a href="list"><h4>메인으로</h4></a>
-			</div>
 			</div>
 		</div>
 		<table class="table">
@@ -96,7 +97,9 @@ if(pageNum > lastPage || pageNum < 1){
 				%>
 				<tr>
 					<td><%=vo.getNum()%></td>
-					<td><a href="view?num=<%=vo.getNum()%>"><%=vo.getTitle()%></a></td>
+					<td><a href="view?num=<%=vo.getNum()%>"><%=vo.getTitle()%></a>
+						<%=vo.getRealFileName()!=null?"<img src='clip.png' style='width:25px;'/> ":""%>
+					</td>
 					<td><%=vo.getWriter()%></td>
 					<td><%=vo.getWriterDate()%></td>
 				</tr>
@@ -134,7 +137,7 @@ if(pageNum > lastPage || pageNum < 1){
 				<%		
 					} else {
 				%>
-				<li><a href="?pageNum=<%=i%>&field=<%=field %>&keyWord=<%=keyWord %>"><%=i%></a></li>
+				<li><a href="?pageNum=<%=i%>&keyWord=<%=keyWord %>"><%=i%></a></li>
 				<%		
 					}
 				}

@@ -57,7 +57,12 @@ public class UpdateController extends HttpServlet {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String writer = request.getParameter("writer");
-
+		String realFileName = request.getParameter("oldFile");
+		
+//		if(realFileName != null) {
+//			realFileName = 
+//		}
+		
 		BoardVO vo = new BoardVO();
 		vo.setNum(Integer.parseInt(num));
 		vo.setTitle(title);
