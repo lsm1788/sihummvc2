@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.net.ApplicationBufferHandler;
+
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -37,7 +39,7 @@ public class WriterController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("writer.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("board/writer.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -47,7 +49,7 @@ public class WriterController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String saveFolder = "upload";
-		
+
 		ServletContext context = request.getServletContext();
 		String realFolder = context.getRealPath(saveFolder);
 		
@@ -55,18 +57,20 @@ public class WriterController extends HttpServlet {
 		if(!targetDir.exists()) {
 			targetDir.mkdir();
 		}
-		
-		int maxSize = 10*1024*1024;	//10Mb
+
+		int maxSize = 10*1024*1024;//10Mb
 		String encType = "UTF-8";
+		
 		//넘어온 값을 변수에 저장
-		MultipartRequest multi = new MultipartRequest
-						(request, realFolder, maxSize, encType, new DefaultFileRenamePolicy());
+		MultipartRequest multi = 
+				new MultipartRequest(request, 
+						realFolder , maxSize , encType , new DefaultFileRenamePolicy());
 		String title = multi.getParameter("title");
 		String content = multi.getParameter("content");
 		String writer = multi.getParameter("writer");
 		
-		String realSaveFileName = multi.getFilesystemName("upfile");
 		String realFileName = multi.getOriginalFileName("upfile");
+		String realSaveFileName = multi.getFilesystemName("upfile");
 		
 
 		BoardVO vo = new BoardVO();
@@ -75,7 +79,7 @@ public class WriterController extends HttpServlet {
 		vo.setWriter(writer);
 		vo.setRealFileName(realFileName);
 		vo.setRealSaveFileName(realSaveFileName);
-		System.out.println(vo);
+		//System.out.println(vo);
 		
 		WriterServiceImpl service = new WriterServiceImpl();
 		service.insert(vo);

@@ -1,12 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
-
 <%@ page import="java.io.*"%>
 <%@ page import="java.text.*" %>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.net.*" %>
-
-
 <%
 	request.setCharacterEncoding("UTF-8");
 
@@ -16,10 +13,10 @@
 	String savePath = root + "upload";
 
 	// 서버에 실제 저장된 파일명
-	String filename = request.getParameter("rsfn");
+	String filename = request.getParameter("rsfn") ;
 	
 	// 실제 내보낼 파일명
-	String orgfilename = request.getParameter("rfn");
+	String orgfilename = request.getParameter("rfn") ;
 	 
 
 	InputStream in = null;

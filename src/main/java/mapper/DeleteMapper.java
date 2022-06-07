@@ -1,20 +1,20 @@
 package mapper;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import domain.BoardVO;
 
-public class UpdateMapper {
+public class DeleteMapper {
 
-	public void update(BoardVO vo) {
-
-		//DB저장
+	public void delete(int num) {
+		//DB불러오기
 		String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
 		String user = "root";
 		String password = "smart";
-		String sql = " UPDATE board SET title = ?, content = ?, writer = ? ";
-		sql += " , realFileName = ?, realSaveFileName = ? ";
-		sql += " WHERE num = ? ";
+		String sql = " DELETE FROM board WHERE num = ? ";
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try{
@@ -23,14 +23,9 @@ public class UpdateMapper {
 			conn = DriverManager.getConnection(url, user, password);
 			stmt = conn.prepareStatement(sql);
 
-			stmt.setString(1, vo.getTitle());
-			stmt.setString(2, vo.getContent());
-			stmt.setString(3, vo.getWriter());
-			stmt.setString(4, vo.getRealFileName());
-			stmt.setString(5, vo.getRealSaveFileName());
-			stmt.setInt(6, vo.getNum());
-			
+			stmt.setInt(1, num);
 			stmt.executeUpdate();
+			
 		} catch (Exception e){
 			e.getLocalizedMessage();
 		} finally {
@@ -41,7 +36,6 @@ public class UpdateMapper {
 				e.getLocalizedMessage();
 			}
 		}
-		
 	}
 
 }
